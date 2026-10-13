@@ -1,0 +1,26 @@
+15/05/2024 08:30 - As mensagens e as chamadas sao protegidas com a criptografia de ponta a ponta.
+15/05/2024 08:31 - Carlos Silva: Bom dia a todos do grupo! Iniciando o projeto da disciplina.
+15/05/2024 08:32 - Mariana Costa: Bom dia Carlos! Ja montei a estrutura inicial do repositorio.
+15/05/2024 08:33 - Mariana Costa: Qualquer duvida me avisem por aqui.
+15/05/2024 08:35 - Rafael Oliveira: Bom dia pessoal!
+Vou ficar responsavel pela parte dos graficos e do parser do arquivo de texto.
+Ja comecei a pesquisar a documentacao do Pandas.
+15/05/2024 08:40 - Lucas Santos: Excelente! Eu ajudo com a interface web e organizacao dos endpoints.
+15/05/2024 08:42 - Carlos Silva: Perfeito, divisão de tarefas concluida.
+16/05/2024 10:15 - Mariana Costa: Atualizacao rapida: modulo de leitura quase finalizado.
+16/05/2024 10:20 - Rafael Oliveira: Muito bom. O dataframe ja esta populando as 4 colunas necessarias:
+data, hora, nome do remetente e mensagem.
+16/05/2024 10:22 - Lucas Santos: Show! O endpoint de upload ja recebe e responde com o total de registros.
+16/05/2024 14:05 - Carlos Silva: Vamos precisar de mais dados de teste?
+16/05/2024 14:10 - Rafael Oliveira: Sim, criei algumas conversas simulando datas diferentes para testar o grafico de linhas temporal.
+17/05/2024 09:00 - Lucas Santos: Bom dia! Adicionei a filtragem por remetente.
+17/05/2024 09:05 - Mariana Costa: Testei a filtragem com o meu nome e retornou certinho.
+17/05/2024 09:12 - Mariana Costa: O histograma por dia tambem esta batendo os totais.
+17/05/2024 11:30 - Rafael Oliveira: O grafico de pizza agora mostra a porcentagem exata de cada remetente.
+17/05/2024 11:32 - Carlos Silva: Ficou bem profissional.
+17/05/2024 11:35 - Carlos Silva: Ficou muito bom, layout bem direto e objetivo.
+17/05/2024 11:36 - Lucas Santos: Sim, as tabelas e os graficos estao bem faceis de navegar.
+18/05/2024 16:00 - Mariana Costa: Finalizei os ultimos testes de integracao.
+18/05/2024 16:05 - Rafael Oliveira: Todos os requisitos da A2 estao cumpridos.
+18/05/2024 16:10 - Carlos Silva: Otimo trabalho em equipe!
+18/05/2024 16:12 - Lucas Santos: Projeto pronto para apresentacao e envio no Git.

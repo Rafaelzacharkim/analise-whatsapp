@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analise de Dados - Conversas do WhatsApp</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="header-content">
+            <h1>Analise de Dados de Conversas do WhatsApp</h1>
+            <p class="subtitle">Processamento de arquivos de exportacao e relatorios estatisticos com Pandas</p>
+        </div>
+    </header>
+
+    <main class="main-container">
+
+        <section class="card upload-section">
+            <div class="card-header">
+                <h2>Importacao de Arquivo</h2>
+            </div>
+            <div class="card-body">
+                <p>Selecione um arquivo de conversa (.txt) exportado do WhatsApp ou utilize os dados de exemplo:</p>
+                <div class="upload-controls">
+                    <input type="file" id="fileInput" accept=".txt" class="file-input">
+                    <button id="btnUpload" class="btn btn-primary">Processar Arquivo</button>
+                    <button id="btnSample" class="btn btn-secondary">Carregar Conversa de Exemplo</button>
+                </div>
+                <div id="statusAlert" class="status-alert hidden"></div>
+            </div>
+        </section>
+
+        <section id="metricsSection" class="metrics-grid hidden">
+            <div class="metric-card">
+                <span class="metric-label">Total de Mensagens</span>
+                <span id="metricTotalMessages" class="metric-value">0</span>
+            </div>
+            <div class="metric-card">
+                <span class="metric-label">Total de Remetentes</span>
+                <span id="metricTotalSenders" class="metric-value">0</span>
+            </div>
+        </section>
+
+        <nav id="navTabs" class="tabs-nav hidden">
+            <button class="tab-btn active" data-tab="tab-dataframe">1. Dataframe Completo</button>
+            <button class="tab-btn" data-tab="tab-summary">2. Resumo das Conversas</button>
+            <button class="tab-btn" data-tab="tab-history">3. Historico do Remetente</button>
+            <button class="tab-btn" data-tab="tab-histogram">4. Histograma Diario</button>
+            <button class="tab-btn" data-tab="tab-pie">5. Grafico de Pizza</button>
+            <button class="tab-btn" data-tab="tab-timeline">6. Grafico de Linhas</button>
+        </nav>
+
+        <div id="tabContentWrapper" class="tab-content-container hidden">
+
+            <div id="tab-dataframe" class="tab-pane active">
+                <div class="pane-header">
+                    <h3>Tabela do Dataframe Completo</h3>
+                    <p class="pane-description">Estrutura tabular extraida pelo Pandas contendo data, hora, nome do remetente e mensagem.</p>
+                    <div class="table-filter-bar">
+                        <input type="text" id="dfSearchInput" placeholder="Filtrar por mensagem ou remetente..." class="text-input">
+                        <span id="dfCounter" class="badge">0 registros</span>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="tableDataframe">
+                        <thead>
+                            <tr>
+                                <th style="width: 15%;">data</th>
+                                <th style="width: 15%;">hora</th>
+                                <th style="width: 25%;">nome do remetente</th>
+                                <th style="width: 45%;">mensagem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dfTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-summary" class="tab-pane">
+                <div class="pane-header">
+                    <h3>Resumo das Conversas</h3>
+                    <p class="pane-description">Total de mensagens por remetente, ordenado do maior volume para o menor.</p>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="tableSummary">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">Posicao</th>
+                                <th style="width: 40%;">Remetente</th>
+                                <th style="width: 20%;">Total de Conversas</th>
+                                <th style="width: 20%;">Percentual (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summaryTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-history" class="tab-pane">
+                <div class="pane-header">
+                    <h3>Historico do Remetente</h3>
+                    <p class="pane-description">Filtragem de mensagens por participante, com indicacao de data e hora.</p>
+                    <div class="filter-controls">
+                        <label for="selectSenderHistory">Selecione o Remetente:</label>
+                        <select id="selectSenderHistory" class="select-input"></select>
+                    </div>
+                </div>
+                <div class="table-wrapper">
+                    <table class="data-table" id="tableHistory">
+                        <thead>
+                            <tr>
+                                <th style="width: 20%;">data</th>
+                                <th style="width: 20%;">hora</th>
+                                <th style="width: 60%;">mensagem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-histogram" class="tab-pane">
+                <div class="pane-header">
+                    <h3>Grafico do Historico do Remetente (Histograma)</h3>
+                    <p class="pane-description">Distribuicao da quantidade de conversas por dia para o remetente selecionado.</p>
+                    <div class="filter-controls">
+                        <label for="selectSenderHistogram">Selecione o Remetente:</label>
+                        <select id="selectSenderHistogram" class="select-input"></select>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartHistogram"></canvas>
+                </div>
+            </div>
+
+            <div id="tab-pie" class="tab-pane">
+                <div class="pane-header">
+                    <h3>Grafico de Pizza</h3>
+                    <p class="pane-description">Participacao percentual de mensagens de cada remetente no grupo.</p>
+                </div>
+                <div class="chart-container chart-container-pie">
+                    <canvas id="chartPie"></canvas>
+                </div>
+            </div>
+
+            <div id="tab-timeline" class="tab-pane">
+                <div class="pane-header">
+                    <h3>Grafico de Linhas (Evolucao Temporal)</h3>
+                    <p class="pane-description">Quantidade de mensagens ao longo do tempo (data) para cada remetente com linhas e cores distintas.</p>
+                </div>
+                <div class="chart-container">
+                    <canvas id="chartTimeline"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer class="app-footer">
+        <p>Aplicacao de Analise de Conversas - Avaliacao A2</p>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
